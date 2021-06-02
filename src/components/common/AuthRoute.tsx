@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom';
 import { Redirect } from 'react-router'
+import GlobalState from '../../contexts/GlobalState'
 
 type Props = {
-    token: string,
     component: any,
     path: string
 }
 
 class AuthRoute extends Component<Props> {
+
+    static contextType = GlobalState
+
     public render() {
-        return <Route path={this.props.path} render={() => this.props.token ? this.props.component : <Redirect to="/login" />}></Route>
+        return <Route path={this.props.path} render={() => this.context.getToken() ? this.props.component : <Redirect to="/login" />}></Route>
     }
 }
 

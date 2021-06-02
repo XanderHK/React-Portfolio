@@ -53,10 +53,13 @@ class Register extends Component<Props, State> {
         })
     }
 
-    public render() {
+    public redirect() {
+        return <Redirect to="/login" />
+    }
 
+    public render() {
         if (this.state.redirect) {
-            return <Redirect to="/login" />
+            this.redirect()
         }
 
         return (

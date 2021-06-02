@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
+import { Button } from 'react-bootstrap'
+import GlobalState from '../../../contexts/GlobalState'
 
 class Logout extends Component {
 
-    private destroy() {
-        sessionStorage.removeItem('token')
-    }
+    static contextType = GlobalState
 
     public render() {
-        return <button onClick={this.destroy}> Logout</ button>
+        return <Button onClick={this.context.destroyToken}> Logout</Button>
     }
 
 }

@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import { Nav } from 'react-bootstrap'
+import Logout from '../Authentication/Logout/Logout'
 
 class NavBar extends Component {
+
+
+
     public render() {
         return (
             <Nav
@@ -16,6 +20,9 @@ class NavBar extends Component {
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link href="/register">Register</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link><Logout /></Nav.Link>
                 </Nav.Item>
             </Nav>
         )

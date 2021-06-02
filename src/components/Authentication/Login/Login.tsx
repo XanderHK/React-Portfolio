@@ -2,9 +2,9 @@ import React, { ChangeEvent, Component } from 'react'
 import { Form, Button, Card } from 'react-bootstrap'
 import axios from 'axios'
 import { Redirect } from 'react-router'
+import GlobalState from '../../../contexts/GlobalState'
 
 type Props = {
-    setToken: any
 }
 
 type State = {
@@ -14,6 +14,8 @@ type State = {
 }
 
 class Login extends Component<Props, State> {
+
+    static contextType = GlobalState
 
     public constructor(props: Props) {
         super(props)
@@ -40,14 +42,21 @@ class Login extends Component<Props, State> {
 
         axios.post(process.env.REACT_APP_API_URL + 'auth/login', data)
             .then((res) => {
-                this.props.setToken(res.data)
+                this.context.setToken(res.data)
+                this.setState({
+                    redirect: true
+                })
             })
             .catch((err) => console.log(err))
     }
 
+    public redirect() {
+        return <Redirect to="/dashboard" />
+    }
+
     public render() {
         if (this.state.redirect) {
-            return <Redirect to="/dashboard" />
+            return this.redirect()
         }
 
         return (

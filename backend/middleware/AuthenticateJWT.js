@@ -1,6 +1,12 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
+/**
+ * Checks if the token is valid if it is 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {

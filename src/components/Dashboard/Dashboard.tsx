@@ -1,8 +1,9 @@
 import { Component } from 'react';
 import axios from 'axios'
+import GlobalState from '../../contexts/GlobalState'
 
 type Props = {
-    getToken: any
+
 }
 
 type State = {
@@ -15,21 +16,26 @@ type State = {
 
 class Dashboard extends Component<Props, State> {
 
+    static contextType = GlobalState
+
     public componentDidMount() {
-        this.getBooks()
+        this.getUsers()
     }
 
-    public getBooks = () => {
+    public getUsers = () => {
         const headers = {
             headers: {
-                'Authorization': `Bearer [${this.props.getToken()}]`
+                'Authorization': `Bearer [${this.context.getToken()}]`
             }
         }
-        axios.get(process.env.REACT_APP_API_URL + "dashboard/registeredUsers", headers).then(res => {
+
+        axios.get(process.env.REACT_APP_API_URL + 'dashboard/registeredUsers', headers).then(res => {
             this.setState({
                 users: res.data
             })
-        }).catch(err => console.log(err))
+        }).catch(err => {
+            console.log(err.response)
+        })
     }
 
 
@@ -40,9 +46,11 @@ class Dashboard extends Component<Props, State> {
                 <h2>Dashboard</h2>
                 <table>
                     <thead>
-                        <th>Userid</th>
-                        <th>Username</th>
-                        <th>Email</th>
+                        <tr>
+                            <th>Userid</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {this.state.users.map((user, index) => {
