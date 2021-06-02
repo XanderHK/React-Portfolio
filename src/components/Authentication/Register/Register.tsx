@@ -59,14 +59,14 @@ class Register extends Component<Props, State> {
 
     public render() {
         if (this.state.redirect) {
-            this.redirect()
+            return this.redirect()
         }
 
         return (
             <div id="Register">
                 <Card>
                     <Card.Header>
-                        Login
+                        Register
                     </Card.Header>
                     <Card.Body>
                         <Form onSubmit={this.handleSubmit}>

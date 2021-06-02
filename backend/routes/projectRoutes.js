@@ -5,13 +5,7 @@ const router = express.Router();
 
 router.get('', async (req, res) => {
     ProjectsCollection.find({}, function (err, projects) {
-        const projectMap = [];
-
-        projects.forEach(function (project) {
-            projectMap.push(project)
-        });
-
-        res.send(projectMap);
+        res.send(projects);
     });
 })
 
@@ -31,8 +25,6 @@ router.post('/create', authenticateJWT, async (req, res) => {
         const lastId = await ProjectsCollection.find({}).limit(1).sort({ $natural: -1 }).then(res => {
             return res[res.length - 1] === undefined ? "0" : res[res.length - 1].projectid
         })
-
-        console.log(String(Number(lastId) + 1))
 
         await ProjectsCollection.create({
             projectid: String(Number(lastId) + 1),

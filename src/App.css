@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.Auth-baackground {
+    background: linear-gradient(to right, #FDC830, #F37335);
+}

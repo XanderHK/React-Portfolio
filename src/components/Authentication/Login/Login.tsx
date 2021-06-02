@@ -1,5 +1,5 @@
 import React, { ChangeEvent, Component } from 'react'
-import { Form, Button, Card } from 'react-bootstrap'
+import { Form, Button, Card, Row, Col } from 'react-bootstrap'
 import axios from 'axios'
 import { Redirect } from 'react-router'
 import GlobalState from '../../../contexts/GlobalState'
@@ -60,28 +60,32 @@ class Login extends Component<Props, State> {
         }
 
         return (
-            <div id="Login">
-                <Card>
-                    <Card.Header>
-                        Login
-                    </Card.Header>
-                    <Card.Body>
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="formBasicEmail">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control name="email" type="email" placeholder="Enter email" onChange={this.handleChange} />
-                            </Form.Group>
-
-                            <Form.Group controlId="formBasicPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange} />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
+            <div id="Login" className="Auth-background">
+                <Row className="justify-content-center d-flex align-items-center h-100">
+                    <Col className="col-sm-6">
+                        <Card className="card-block">
+                            <Card.Header>
                                 Login
+                            </Card.Header>
+                            <Card.Body>
+                                <Form onSubmit={this.handleSubmit}>
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Email address</Form.Label>
+                                        <Form.Control name="email" type="email" placeholder="Enter email" onChange={this.handleChange} />
+                                    </Form.Group>
+
+                                    <Form.Group controlId="formBasicPassword">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange} />
+                                    </Form.Group>
+                                    <Button variant="primary" type="submit">
+                                        Login
                             </Button>
-                        </Form>
-                    </Card.Body>
-                </Card>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
             </div>
         )
     }

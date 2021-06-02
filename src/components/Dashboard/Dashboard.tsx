@@ -1,69 +1,13 @@
 import { Component } from 'react';
-import axios from 'axios'
-import GlobalState from '../../contexts/GlobalState'
 
 type Props = {
-
+    component: any
 }
-
-type State = {
-    users: {
-        username: string,
-        userid: string,
-        email: string
-    }[]
-}
-
-class Dashboard extends Component<Props, State> {
-
-    static contextType = GlobalState
-
-    public componentDidMount() {
-        this.getUsers()
-    }
-
-    public getUsers = () => {
-        const headers = {
-            headers: {
-                'Authorization': `Bearer [${this.context.getToken()}]`
-            }
-        }
-
-        axios.get(process.env.REACT_APP_API_URL + 'dashboard/registeredUsers', headers).then(res => {
-            this.setState({
-                users: res.data
-            })
-        }).catch(err => {
-            console.log(err.response)
-        })
-    }
-
-
+class Dashboard extends Component<Props> {
     public render() {
-        if (this.state === null) return <div />;
         return (
             <div id="Dashboard">
-                <h2>Dashboard</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Userid</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.users.map((user, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{user.userid}</td>
-                                    <td>{user.username}</td>
-                                    <td>{user.email}</td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+                {this.props.component}
             </div>
         )
     }

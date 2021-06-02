@@ -7,7 +7,7 @@ class Logout extends Component {
     static contextType = GlobalState
 
     public render() {
-        return <Button onClick={this.context.destroyToken}> Logout</Button>
+        return <Button id="logout" onClick={this.context.destroyToken}> Logout</Button>
     }
 
 }

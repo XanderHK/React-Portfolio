@@ -6,6 +6,9 @@ const TokensCollection = require('../config/models/token.js')
 const router = express.Router()
 require('dotenv').config()
 
+/** 
+ * 
+ */
 router.post('/register', async (req, res) => {
     try {
         const body = req.body
@@ -44,6 +47,9 @@ router.post('/register', async (req, res) => {
     }
 })
 
+/** 
+ * 
+ */
 router.post('/login', async (req, res) => {
     try {
         const body = req.body
@@ -52,8 +58,14 @@ router.post('/login', async (req, res) => {
         if (user) {
             const validPassword = await bcrypt.compare(body.password, user.password)
             if (validPassword) {
-                const accessToken = jwt.sign({ username: user.username, userid: user.userid }, process.env.JWT_SECRET, { expiresIn: '15s' })
+                const accessToken = jwt.sign({ username: user.username, userid: user.userid }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME })
                 const refreshToken = jwt.sign({ username: user.username, userid: user.userid }, process.env.REFRESH_TOKEN_SECRET)
+
+                const checkIfExists = await TokensCollection.findOne({ userid: user.userid })
+
+                if (checkIfExists) {
+                    await TokensCollection.deleteMany({ userid: user.userid })
+                }
 
                 await TokensCollection.create({
                     userid: user.userid,
@@ -75,6 +87,9 @@ router.post('/login', async (req, res) => {
     }
 })
 
+/** 
+ * 
+ */
 router.post('/token', (req, res) => {
     try {
         const { token } = req.body
@@ -93,7 +108,7 @@ router.post('/token', (req, res) => {
             const refreshToken = TokensCollection.findOne({ userid: user.userid })
 
             if (refreshToken) {
-                const accessToken = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: '15s' })
+                const accessToken = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME })
                 res.status(200).json({
                     accessToken
                 })
@@ -110,6 +125,9 @@ router.post('/token', (req, res) => {
     }
 })
 
+/** 
+ * 
+ */
 router.post('/token-expired', (req, res) => {
     try {
         const { token } = req.body
