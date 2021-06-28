@@ -1,3 +1,52 @@
 body {
-       background: linear-gradient(to right,  #0c1a1f, #1a2e36)
+       background: linear-gradient(to right,  #0c1a1f, #1a2e36);
+       overflow-x:hidden;
+}
+
+
+.round-btn {
+    height: 40px;
+    width: 40px;
+    padding: 10px;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    background: linear-gradient(to right,  #0c1a1f, #1a2e36);
+    display: -webkit-flex;
+    display: flex;
+    border-radius: 50%;
+    outline: transparent;
+    border: none;
+}
+
+.content{
+       padding-bottom: 2%;
+}
+
+.logo {
+       width:40px;
+}
+
+.footer {
+       margin-top: 1rem; 
+       padding: 1rem; 
+       /* background-color: #23272b;  */
+       position: fixed; 
+       bottom: 0; 
+       left: 0; 
+       width: 100%;
+}
+
+.Auth-background{
+        margin-top: 10%; 
+}
+
+
+.Form-background{
+        margin-top: 10%; 
+}
+
+.Project-background{
+       margin-top:5%;
 }

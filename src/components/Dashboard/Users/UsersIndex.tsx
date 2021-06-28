@@ -42,8 +42,7 @@ class UsersIndex extends Component<Props, State> {
     public render() {
         if (this.state === null) return <div />;
         return (
-            <div id="Dashboard">
-                <h2>Dashboard</h2>
+            <div id="Users">
                 <table>
                     <thead>
                         <tr>

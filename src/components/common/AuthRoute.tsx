@@ -13,7 +13,7 @@ class AuthRoute extends Component<Props> {
     static contextType = GlobalState
 
     public render() {
-        return <Route path={this.props.path} render={() => this.context.getToken() ? this.props.component : <Redirect to="/login" />}></Route>
+        return <Route exact path={this.props.path} render={() => this.context.getToken() ? this.props.component : <Redirect to="/login" />}></Route>
     }
 }
 

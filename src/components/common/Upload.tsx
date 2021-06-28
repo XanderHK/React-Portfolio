@@ -8,7 +8,7 @@ type Props = {
 class Upload extends Component<Props> {
 
     public render() {
-        return <Form.Control type="file" id="file" name={this.props.name}></Form.Control>
+        return <Form.File type="file" id="file" name={this.props.name}></Form.File>
     }
 
 }

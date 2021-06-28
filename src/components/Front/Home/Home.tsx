@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
+import Footer from '../../UI/Footer'
+import NavBar from '../../UI/NavBar'
 
 class Home extends Component {
     public render() {
-        return <div>Home</div>
+        return (
+            <div id="Home">
+                <NavBar />
+                <div>Home</div>
+                <Footer />
+            </div>
+        )
     }
 }
 

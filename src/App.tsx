@@ -8,24 +8,32 @@ import GlobalState from './contexts/GlobalState'
 import AuthRoute from './components/common/AuthRoute'
 import Dashboard from './components/Dashboard/Dashboard'
 import Login from './components/Authentication/Login/Login'
-import Logout from './components/Authentication/Logout/Logout'
 import Register from './components/Authentication/Register/Register'
-import NavBar from './components/UI/NavBar'
-import ProjectCreate from './components/Dashboard/Projects/ProjectsCreate'
-import ProjectIndex from './components/Dashboard/Projects/ProjectsIndex'
+import ProjectsCreate from './components/Dashboard/Projects/ProjectsCreate'
+import ProjectsIndex from './components/Dashboard/Projects/ProjectsIndex'
 import Home from './components/Front/Home/Home'
 import About from './components/Front/About/About'
+import UsersIndex from './components/Dashboard/Users/UsersIndex'
+import FrontProjectIndex from './components/Front/Projects/ProjectsIndex'
+import { TokenGet, TokenSet, TokenDestroy, IsOnAdminPanel, SetError } from './types/types';
 
 
 
-type Props = {}
+type Props = {
+
+}
+
 type State = {
-  getToken: any,
-  setToken: any,
-  destroyToken: any,
+  getToken: TokenGet,
+  setToken: TokenSet,
+  destroyToken: TokenDestroy,
+  isOnAdminPanel: IsOnAdminPanel,
+  setError: SetError,
+  removeError: any,
   destroy: boolean,
   redirect: boolean,
-  rerender: boolean
+  rerender: boolean,
+  errors: string[]
 }
 class App extends Component<Props, State> {
 
@@ -42,9 +50,13 @@ class App extends Component<Props, State> {
       getToken: this.getToken,
       setToken: this.setToken,
       destroyToken: this.destroyToken,
+      isOnAdminPanel: this.isOnAdminPanel,
+      setError: this.setError,
+      removeError: this.removeError,
       destroy: false,
       redirect: false,
       rerender: false,
+      errors: []
     }
   }
 
@@ -52,8 +64,25 @@ class App extends Component<Props, State> {
    * Adds a event listener to a refs object that will extend the session of the user
    */
   public componentDidMount = () => {
-    this.wrapper.current!.addEventListener('mouseup', this.extendSession, true)
-    this.wrapper.current!.addEventListener('keypress', this.extendSession, true)
+    // Third param allows the event to propogate to all the child elements
+    this.wrapper.current!.addEventListener('mouseup', (event) => this.extendSession(event), true)
+    this.wrapper.current!.addEventListener('keypress', (event) => this.extendSession(event), true)
+
+    setInterval(() => {
+      if (!this.state.destroy) {
+        this.destroySession()
+      }
+    }, 10000)
+  }
+
+  /**
+   * Changes state to force render
+   * @param bool 
+   */
+  public rerender = (bool: boolean) => {
+    this.setState({
+      rerender: bool
+    })
   }
 
   /**
@@ -74,23 +103,24 @@ class App extends Component<Props, State> {
    */
   public setToken = (userToken: string) => {
     sessionStorage.setItem('token', JSON.stringify(userToken))
-    this.setState({
-      rerender: true
-    })
+    this.rerender(true)
   }
 
   /**
    * Destroys the JWT token
    */
-  public destroyToken() {
+  public destroyToken = () => {
     sessionStorage.removeItem('token')
+    this.rerender(true)
   }
+
 
   /**
    * Extends the session by returning a new JWT token
    */
-  public extendSession = (event: any) => {
-    if (event.target.id === "logout") return
+  public extendSession = (event: MouseEvent | KeyboardEvent): void => {
+    console.log((event.target as HTMLDivElement).parentElement)
+    if ((event.target as HTMLDivElement).id === "logout") return
     const token = this.getToken()
     if (token !== undefined) {
       const headers = {
@@ -98,7 +128,6 @@ class App extends Component<Props, State> {
           'Authorization': `Bearer [${token}]`
         }
       }
-
       const data = {
         token: token
       }
@@ -131,46 +160,75 @@ class App extends Component<Props, State> {
 
     axios.post(process.env.REACT_APP_API_URL + 'auth/token-expired', data, headers)
       .then(res => {
-        if (res.data) {
-          this.destroyToken()
-        } else {
-          this.setState({
-            destroy: false
-          })
+        if (this.getToken()) {
+          if (res.data) {
+            this.destroyToken()
+          }
         }
       }).catch(err => console.log(err))
   }
 
+  /**
+   * 
+   * @returns 
+   */
+  public isOnAdminPanel(): boolean {
+    const url = window.location.href
+    if (url.includes('dashboard')) return true
+    return false
+  }
+
+  /**
+   * 
+   * @param message 
+   */
+  public setError = (message: string): void => {
+    this.setState({
+      errors: [...this.state.errors, message]
+    })
+  }
+
+  /**
+   * 
+   * @param message 
+   */
+  public removeError = (message: string): void => {
+    const errors = this.state.errors;
+    errors.splice(errors.indexOf(message), 1);
+    this.setState({
+      errors: errors
+    })
+  }
+
 
   public render() {
-    setInterval(() => {
-      if (!this.state.destroy) {
-        this.destroySession()
-      }
-    }, 10000)
-
+    // need to find a alternative since the setinterval doesnt trigger when it needs to but everytime the page rerenders
     return (
       <div className="wrapper" ref={this.wrapper}>
         <GlobalState.Provider value={this.state}>
-          <Container fluid className="min-vh-100">
-            <NavBar />
-            <BrowserRouter>
-              <Switch>
-                <Route path="/about">
-                  <About />
-                </Route>
-                <Route path="/login" render={() => this.getToken() ? <Redirect to="/dashboard" /> : <Login />} />
-                <Route path="/register" render={() => this.getToken() ? <Redirect to="/dashboard" /> : <Register />} />
-                <AuthRoute path="/logout" component={<Logout />} />
-                <AuthRoute path="/dashboard/projects/create" component={<Dashboard component={<ProjectCreate />} />} />
-                <AuthRoute path="/dashboard/projects" component={<Dashboard component={<ProjectIndex />} />} />
-                <AuthRoute path="/dashboard" component={<Dashboard component={null} />} />
-                <Route path="/">
-                  <Home />
-                </Route>
-              </Switch>
-            </BrowserRouter>
-          </Container>
+          <div className="min-vh-100">
+            <Container fluid>
+              <BrowserRouter>
+                <Switch>
+                  <Route exact path="/about">
+                    <About />
+                  </Route>
+                  <Route exact path="/projects">
+                    <FrontProjectIndex />
+                  </Route>
+                  <Route exact path="/login" render={() => this.getToken() ? <Redirect to="/dashboard" /> : <Login />} />
+                  <Route exact path="/register" render={() => this.getToken() ? <Redirect to="/dashboard" /> : <Register />} />
+                  <AuthRoute path="/dashboard/users" component={<Dashboard component={<UsersIndex />} />} />
+                  <AuthRoute path="/dashboard/projects/create" component={<Dashboard component={<ProjectsCreate />} />} />
+                  <AuthRoute path="/dashboard/projects" component={<Dashboard component={<ProjectsIndex />} />} />
+                  <AuthRoute path="/dashboard" component={<Dashboard component={null} />} />
+                  <Route exact path="/">
+                    <Home />
+                  </Route>
+                </Switch>
+              </BrowserRouter>
+            </Container>
+          </div>
         </GlobalState.Provider>
       </div>
     );

@@ -3,8 +3,7 @@ require('dotenv').config()
 
 async function connectDB() {
     try {
-        const dbName = 'reactportfolio'
-        const connection = await mongoose.connect(process.env.REACT_APP_DB_URL + dbName, {
+        const connection = await mongoose.connect(process.env.REACT_APP_DB_URL + process.env.REACT_APP_DB_NAME, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true

@@ -58,8 +58,8 @@ router.post('/login', async (req, res) => {
         if (user) {
             const validPassword = await bcrypt.compare(body.password, user.password)
             if (validPassword) {
-                const accessToken = jwt.sign({ username: user.username, userid: user.userid }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME })
-                const refreshToken = jwt.sign({ username: user.username, userid: user.userid }, process.env.REFRESH_TOKEN_SECRET)
+                const accessToken = jwt.sign({ username: user.username, userid: user.userid, id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME })
+                const refreshToken = jwt.sign({ username: user.username, userid: user.userid, id: user._id }, process.env.REFRESH_TOKEN_SECRET)
 
                 const checkIfExists = await TokensCollection.findOne({ userid: user.userid })
 
@@ -108,7 +108,7 @@ router.post('/token', (req, res) => {
             const refreshToken = TokensCollection.findOne({ userid: user.userid })
 
             if (refreshToken) {
-                const accessToken = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME })
+                const accessToken = jwt.sign({ username: user.username, userid: user.userid, id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME })
                 res.status(200).json({
                     accessToken
                 })
