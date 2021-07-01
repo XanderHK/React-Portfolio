@@ -3,6 +3,7 @@ export declare type TokenSet = (param: string) => void
 export declare type TokenDestroy = () => void
 export declare type IsOnAdminPanel = () => boolean
 export declare type SetError = (param: string) => void
+export declare type RemoveError = (param : string) => void
 export declare type Project = {
     projectdescription: string
     projectid: string
