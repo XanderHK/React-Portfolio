@@ -89,7 +89,7 @@ class Login extends Component<Props, State> {
                 <NavBar />
                 <Row className="align-items-center Auth-background">
                     <Col className="col-sm-4 mx-auto">
-                        <Card className="card-block h-100 border-primary justify-content-center">
+                        <Card className="card-block h-100 justify-content-center">
                             <Card.Header className="text-center">
                                 USER LOGIN
                             </Card.Header>

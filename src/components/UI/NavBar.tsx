@@ -93,13 +93,13 @@ class NavBar extends Component {
         return (
             <div id="NavBar">
                 <Navbar expand="lg">
-                    {/* <Navbar.Brand><img className="img-responsive logo" src="https://xanderhk.nl/img/logo.png" alt="" /></Navbar.Brand> */}
+                    <Navbar.Brand>XanderHK </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav
                             // eslint-disable-next-line no-restricted-globals
                             activeKey={location.pathname}
-                            className="navbar navbar-expand-lg navbar-dark rounded w-100">
+                            className="navbar navbar-expand-lg navbar-light rounded w-100">
                             {this.menu()}
                         </Nav>
                     </Navbar.Collapse>

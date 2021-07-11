@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 body {
-       background: linear-gradient(to right,  #0c1a1f, #1a2e36);
+       /* background: linear-gradient(to right,  #0c1a1f, #1a2e36); */
+       font-family: 'Roboto', sans-serif;
+       background-color: #ECF0F1;
        overflow-x:hidden;
 }
 
@@ -31,7 +35,7 @@ body {
 .footer {
        margin-top: 1rem; 
        padding: 1rem; 
-       /* background-color: #23272b;  */
+       background-color: #23272b; 
        position: fixed; 
        bottom: 0; 
        left: 0; 
@@ -50,3 +54,4 @@ body {
 .Project-background{
        margin-top:5%;
 }
+

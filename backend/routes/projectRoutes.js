@@ -71,4 +71,16 @@ router.delete('/:id', authenticateJWT, async (req, res) => {
     }
 })
 
+router.put('/:id', authenticateJWT, async (req, res) => {
+    try {
+        const id = req.params.id
+
+        await ProjectsCollection.updateOne({projectid : id}, {$set : {}})
+
+        res.status(200).json({ message: "Succesfully edited" })
+    }catch(error) {
+        res.status(500).send(error)  
+    }
+})
+
 module.exports = router

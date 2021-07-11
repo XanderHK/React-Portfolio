@@ -81,10 +81,10 @@ class FrontProjectsIndex extends Component<Props, State> {
                     <Row>
                         {this.state.projects[this.state.projectsIndex]?.map((project: Project, index: number) => {
                             return (
-                                <Col className="col-sm-3" key={index}>
+                                <Col className="col-sm" key={index}>
                                     <Card>
                                         <Card.Header>
-                                            <img src={`${process.env.PUBLIC_URL}/uploads/${project.projectimagepath}`} alt="" />
+                                            <img src={`${process.env.PUBLIC_URL}/uploads/${project.projectimagepath}`} height={250} alt="" />
                                         </Card.Header>
                                         <Card.Body>
                                             <h5 className="card-title">{project.projectname}</h5>
